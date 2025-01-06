@@ -1,0 +1,45 @@
+step -1 (mumbai)
+go to the vpc service
+create vpc 10.0.0.0/16
+create 1 private subnet and 1 public subnet (allow public ip to public subnet )
+public subnet- 10.0.0.0/20
+private subnet- 10.0.16.0/20
+then create internet gateway and attach to the vpc
+go to the route table select the route table of vpc that you created then edit route table
+o.o.o.o intrnet gateway
+then go to the route table edit route table
+11.0.32.0/20 peering connection
+12.0.48.0/20 peering connection
+
+then launch instances using public and private subnet
+and allow ALL ICMP -IV4 port both the instances 
+
+
+step-2 (ohio)
+go to the vpc service
+create vpc 11.0.0.0/16
+create 1 private subnet
+private subnet- 11.0.32.0/20
+create vpc peering ohio to mumbai
+and accept the request from mumbai
+then go to the route table edit route table
+10.0.16.0/20 peering connection
+
+
+then launch instance by using private subnet 
+and allow ALL ICMP -IV4 port to the instances 
+
+
+step-3 (origon)
+go to the vpc service
+create vpc 12.0.0.0/16
+create 1 private subnet
+private subnet- 12.0.48.0/20
+create vpc peering origon to mumbai
+accept the request from mumbai
+then go to the route table edit route table
+10.0.16.0/20 peering connection
+
+then launch instance by using private subnet 
+and allow ALL ICMP -IV4 port to the instances 
+

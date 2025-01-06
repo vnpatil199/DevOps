@@ -1,0 +1,164 @@
+
+
+
+Create VPC (My-VPC) cidr = 10.0.0.0/16
+
+create subnets = 
+(Pub-subnet1 = 10.0.0.0/24) eu-west-3b 
+(Pub-subnet2 = 10.0.1.0/24) eu-west-3a
+(pri-subnet1 = 10.0.2.0/24) eu-west-3b
+(pri-subnet2 = 10.0.3.0/24) eu-west-3c
+
+create security group = name(3Tier), VPC (My-VPC), Inbound rules (SSH, HTTP, Custom TCP=8080, MY SQL/Aurora=3306) 
+ 
+
+Launch instance = select t2 micro -- 3. configure intance details = select vpc (my vpc) -- subnet (Pub-subnet1) -- assign pub ip -- next -- storage -- next -- security grp select=(3 Tier) -- review and launch
+
+same for Pub-ins2 just select pub-subnet-2
+
+create IGW in vpc = name (MY-IGW)
+attach to vpc -- select (my-VPC)
+
+create route tables = name (PUB-route) -- edit subnet association = select (pub-subnet2, pub-subnet1) 
+save association
+
+PUB-route = edit routes -- add (IGW) save
+
+create route tables = name (PRI-route) -- edit subnet association = select (pri-subnet1) 
+save association
+Note :- doesn't associate pri-subnet2 because we dont req internet in RDS
+
+create NAT gateway = name(NAT-GW) -- subnet (select pub-subnet-2)-- allocate elastic ip -- creatre NAT gateway
+
+
+Now create 2 private instances with pri-subnet1 
+and configure tomcat on both instances
+
+launch ins = select ins -- select (my-VPC) -- subnet (pri-Subnet1) -- select SG (3 Tier) -- review and launch (Name= pri-ins1)
+
+launch ins = select ins -- select (my-VPC) -- subnet (pri-Subnet2) -- select SG (3 Tier) -- review and launch  (Name = pri-ins2)
+
+configure tomcat in both instances
+take ssh using NAT associated subnet instance (Pub-instance1)
+
+drag and drop student app in github acc Secondaryrepo
+ssh -i (key) ec2-user@(pri-ip ins1)
+sudo yum update -y
+sudo yum install git -y
+mkdir gitdir
+cd gitdir
+git init
+git clone (https link github)
+cd Secondaryrepo/Student app
+mv student app/* /home/ec2-user/
+ls /home/ec2-user
+
+configure tomcat now
+sudo -i 
+java --version
+yum install java -y
+yum search openjdk
+yum install java-11-openjdk
+
+google :- tomcat.apache.org
+tomcat 8 -- core : tar.gz (copy address link) -- 
+
+linux machine :- curl -O (paste link)
+ls
+tar -tvf (tar file) =>to view without unzip
+tar -xvf (file name) -C /home/ec2-user
+ls /home/ec2-user
+
+cd /home/ec2-user/apache/bin 
+ls
+./catalina.sh start (only run in apa/bin)
+curl localhost:8080
+
+mv student.war /home/ec2-user/apache.../webapps 
+ls webapps/student 
+
+create DB subnet group in RDS
+Name (DB-subnet) -- VPC (my-vpc) --Description (3-tier-RDS-subnet) -- Add subnet chosse AZ (eu-west-3b, eu-west-3c <you have to choose subnet where you will configure rds>) -- Subnet (10.0.3.0/24, 10.0.2.0/24)
+create
+
+Rds -- create database  (database shoud not have - sign)
+name = root
+password 12345678
+vpc = my-VPC
+Subnet group = DB-subnet
+VPC security group (choose existing) -- select (3-Tier) Availibility Zone (eu-west-3c)
+create Database
+
+ssh (pri ins1)
+sudo yum install  mysql -y
+mysql -h (paste end point) -uroot -p12345678
+show databases;
+
+
+now we require connector to make dabatabase connectivity
+move connector(mysql-connector.jar) to apache../lib
+
+cd conf/
+vim context.xml
+
+windows :- /d/AWS/aws notes/RDS/student app/open tomcat-rds-db01
+copy resource name tag and paste
+it below in conf file
+<watchResources${cataline.base}/vonf/web.xml
+</watchResources>
+paste here
+make changes :- username = "root" password = "12345678"  
+url:-"jdbc ..//(RDB-ENDPOINT):3360/(databasename)"/>
+save and exit
+cd ..
+cd bin
+.catalina.sh restart
+.catalina.sh start
+
+Now create database structure(table) to store data from studentapp
+
+mysql -h (paste end point) -uroot -p12345678
+show databases;
+create database (RDS-DB-Name);
+show databases;
+use (RDS-DB-Name);
+
+windows :- /d/AWS/aws notes/RDS/student app/open tomcat-rds-db01
+
+use studentpp :- copy and paste in mariadb (from CREATE TABLE)
+
+show tables;
+select * from students;
+desc students
+
+create target group and load balancer to check studentapp is running or not
+
+create target group =
+target name (TG1) -- protocol(http):8080 -- vpc (my-VPC) -- select (pri-ins1, pri-ins2) -- include as pending below -- create targert group
+
+create LB = application -- name (LB) -- inetrnet facing (for internet) -- VPC (select my-VPC) -- mapping -subnet(eu-west-3a=pub-subnet2, eu-west-3b= pub-subnet1) -- security group (select 3 tier) -- Listner (HTTP: port:80) select TG-1 -- create load balancer 
+
+copy DNS and hit in new tab 
+
+Hit this url in new tab :- 
+https://s3-us-west-2.amazonaws.com/studentapi-cit/index.html
+
+integrated Student form with this xml page
+
+IN web page right click on Enter to student Application  -- inspect
+copy HTML code
+
+
+Now take SSH of pub ins 2 and
+yum install httpd -y
+vim /var/www/html/index.html
+paste HTML code here 
+
+<a href = "(paste LB DNS)">
+save and exit
+systemctl restart httpd
+
+hit public IP of pub-ins-
+
+
+
