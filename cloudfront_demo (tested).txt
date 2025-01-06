@@ -1,0 +1,19 @@
+create bucket 
+ACL enable with read,write permission
+upload css template then make public 
+create static web hosting 
+
+goto cloudfront
+  create distribution
+  Origin domain (paste static web hosting URL)
+  WAF (Web application Firewall) Off(Do not enable security protections)
+  create distribution
+
+then copy cloudfront DNS(Distribution domain name)
+and paste on Incognito browser because of this browser does not stored cache
+show your css page  
+
+
+Geographical Restriction 
+black list (any countries Iam select india)
+(because in India restrict country does not open my website)

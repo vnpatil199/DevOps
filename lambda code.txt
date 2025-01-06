@@ -1,0 +1,126 @@
+# Backup all in-use volumes in all regions
+
+import boto3
+
+def lambda_handler(event, context):
+    ec2 = boto3.client('ec2')
+    
+    # Get list of regions
+    regions = ec2.describe_regions().get('Regions',[] )
+
+    # Iterate over regions
+    for region in regions:
+        print("Checking region %s " % region['RegionName'])
+        reg=region['RegionName']
+
+        # Connect to region
+        ec2 = boto3.client('ec2', region_name=reg)
+    
+        # Get all in-use volumes in all regions  
+        result = ec2.describe_volumes( Filters=[{'Name': 'status', 'Values': ['in-use']}])
+        
+        for volume in result['Volumes']:
+            print("Backing up %s in %s" % (volume['VolumeId'], volume['AvailabilityZone']))
+        
+            # Create snapshot
+            result = ec2.create_snapshot(VolumeId=volume['VolumeId'],Description='Created by Lambda backup function ebs-snapshots')
+        
+            # Get snapshot resource 
+            ec2resource = boto3.resource('ec2', region_name=reg)
+            snapshot = ec2resource.Snapshot(result['SnapshotId'])
+        
+            volumename = 'N/A'
+        
+            # Find name tag for volume if it exists
+            if 'Tags' in volume:
+                for tags in volume['Tags']:
+                    if tags["Key"] == 'Name':
+                        volumename = tags["Value"]
+        
+            # Add volume name to snapshot for easier identification
+            snapshot.create_tags(Tags=[{'Key': 'Name','Value': volumename}])
+
+
+***************************************************************************************************************************
+
+trigger s3 bucket data stored in dynamoDB code
+
+import boto3
+from uuid import uuid4
+
+def lambda_handler(event, context):
+    s3 = boto3.client("s3")
+    dynamodb = boto3.resource('dynamodb')
+    dynamoTable = dynamodb.Table('mytable')         #type table name replace "mytable" in dynamodb 
+    
+    for record in event.get('Records', []):
+        bucket_name = record['s3']['bucket']['name']
+        object_key = record['s3']['object']['key']
+        size = record['s3']['object'].get('size', -1)
+        event_name = record['eventName']
+        event_time = record['eventTime']
+        
+        dynamoTable.put_item(
+            Item={
+                'demo': str(uuid4()),        #partition key name "demo" string format in "mytable" dynamodb 
+                'Bucket': bucket_name,
+                'Object': object_key,
+                'Size': size,
+                'Event': event_name,
+                'EventTime': event_time
+            }
+        )
+
+
+***************************************************************************************************************
+
+cloud Formation code create ec2 instance
+
+ec2.json
+
+{
+	"AWSTemplateFormatVersion": "2010-09-09",
+	"Description": "My CloudFormation Template",
+	"Resources": {
+		"MyEC2Instance": {
+			"Type": "AWS::EC2::Instance",
+			"Properties": {
+				"ImageId": "ami-002829755fa238bfa",
+				"KeyName": "sagar-key",
+				"BlockDeviceMappings": [{
+						"DeviceName": "/dev/xvda",
+						"Ebs": {
+							"VolumeType": "io1",
+							"Iops": 200,
+							"DeleteOnTermination": false,
+							"VolumeSize": 20
+						}
+					},
+					 
+						"DeviceName": "/dev/xvdb",
+						"NoDevice": {}
+					}
+				]
+			}
+		}
+	}
+}
+
+
+**********************************************************************************
+
+create bucket using cloud formation
+
+bucket.json
+
+{
+    "Resources": {
+        "S3Bucket": {
+            "Type": "AWS::S3::Bucket",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+                "BucketName": "sagarbucket1212121"
+            }
+        }
+    }
+}

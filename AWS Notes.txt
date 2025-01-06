@@ -1,0 +1,619 @@
+
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                                 WHAT?............WHY?........HOW?
+IAM
+===
+->IAM is an identity and access management service in which we can manage identity and access
+->IAM have four resource:
+ 1.users
+ 2.groups
+ 3.roles
+ 4.policy
+->through this resource we use IAM service
+->users are authorized person to which we give access and provide authorization with the help of policy.
+->they have secured access to use aws resource.
+->user have two type of access
+   i)programatic access 
+   ii)console access
+->in cansiole access we have to give username and password to access aws account
+->where as in programitic access have to give crediantials for access other than cansole access
+->all acccess other that the console access come under programitic access
+->here we can access through API or SDK or CLI or other development tool
+-> groups are group of user in wich we can add user in the group and can attach policy to group which will be common for all group      members
+->we can use group in case where we have to attach permission to multiple user at a time
+->policy are nothing but bunch of permission or rapping of permission
+->policy are of two type aws manage policy and coustom manage policy
+->aws based policy are totally managed by aws
+->where as coustom managed policy that we create according to our requirment.
+->we can give policy to user in three ways:-
+   i)we can add user to group
+   ii) we can copy permission from other user
+   iii)we can directly attach policy to user
+->whenever we have to do communication between two service then we can use role for that purpose.
+->roles is the way to grant permission to the machine.
+->Iam is a global service and it is free.
+->we can access it resource through other region as well
+->there are some limitations in IAM 
+->in iam we can create 5000 user and 300 groups
+->at a time we can create 10 user
+->their are 1000 policy and we can give 10 policy to each user.
+->we can create 1000 IAM role under single account.
+
+FEATURES OF IAM:-
+================
+1)Shared access to AWS account
+2)Granular permission(can give diffrent permission to diffrent people for diffrent resource)
+3)Secure access to AWS resource for application that run on Amazon EC2
+4)MFA
+4)Identity Fedration((You can allow users who already have passwords elsewhere—for example, in your corporate network or with an 
+internet identity provider—to get temporary access to your AWS account.)
+5)Identity information for assurance
+6)Free to use
+7)integrated with many AWS services
+8)Evantually consistent
+
+ARN
+====
+->ARN is amazon resource name which have 6 filed
+arn:aws:s3(service name):(region):account no:myaws-33(resource name)
+1.arn =>amazon resource name
+2.partation
+3.service name
+4.region name
+5.account no
+6.sercice resource type or name
+
+MFA
+===
+->for secure acces we can use  MFA
+->MFA is a two way authentication 
+->one is using password later on we will use MFA code
+->MFA come with two variant one is h/w and second one is virtual s/w app
+->we can install virtual app in our IOS and andriod device where as device is sink up with the user and so that we get code
+->It is not conected with internet or any network that why it is more secure
+->it contain some algorithm from that algoritm it generate six digit  of code in every 30 sec we just have to sink up with the code and user MFA
+->it just provide extra layer of protection on top of username and password
+
+IAM USERS:-
+=========
+(ROOT, IAM-USER(IAM-ENTITY), FEDRATED-USER, POWER-USER)
+
+1.)ROOT:-
+     -Root user is create during the AWS sign-up process.
+    -All AWS accounts have a root user (only one).
+    -Root user has complete access to all the AWS services and resources in the account.
+    -Is accessed by signing in with the email address and password that you used to create the account.
+
+2.)IAM-USER/IAM-ENTITY:-
+    - an IAM user is an entity which we create in aws to represent the person that uses it       to interact with aws.
+    -a user in aws consist of a name and credeantials
+    -IAM user with addministrative permisssion is not same thing as the aws account root       user.  
+    -we can give two type of access to a IAM -User ,first one is programatic access and      second one is aws management console access.  
+
+3.)FEDRATED-USER:-
+   -A user who is allowed to access AWS resources from third-party vendors – such as    Google,Facebook,Linked In, Corporate credentials, etc.
+   (we can allow users who already have passwords elsewhere—for example, in your       corporate network or with an internet identity provider—to get temporary access to         
+                                                                                       your AWS account.)
+
+4.)POWER-USER:
+   -power user can create KMS(Key Management Service) keys, use and manage the         KMS keys they create, and view all KMS keys and IAM identies.
+
+
+IAM GROUPS:-
+===========
+User groups are collection of users. Permissions can be set on groups so that all users within a group have the same permissions.
+
+
+IAM ROLES:-
+==========
+IAM Role is an IAM Identity similar to IAM user, created in AWS account with specific permission policies assigned to it. 
+These policies define what IAM role can and cannot do in the AWS account.
+ IAM roles do not hold authentication credentials such as login passwords or access keys, instead a temporary security credential is generated for each individual role session.
+ These are normally meant to delegate access to users, services or applications that don’t have explicit allow on AWS resource.
+
+ IAM roles are entities that can be created and assigned specific permissions. A role can be assumed by anyone who needs it, and is not associated with a single group or entity.
+
+
+IAM POLICIES:-
+============
+Policies are objects in AWS that are associated with an entity (users, groups, roles) or AWS resources to define their permissions.
+ Policies are stored in AWS as JSON objects. 
+AWS supports six types of policies: 
+1)identity-based policies
+The identity-based policy is a frequently-used policy document, important to control the actions of users or roles.
+ Managed and Inline policies are the two types of identity-based policies in IAM.
+
+Managed Policy: This policy can be applied to an individual IAM user or a group of users or roles in an account. Managed policies are further divided into two policies- 
+AWS managed and customer-managed.
+AWS managed policies are created before hand and managed by AWS. Customer-managed policies are created by us within an AWS account. 
+They provide specific control in permissions’ management in our policies.
+
+Inline Policy: Policies that you add directly to a single user, group, or role. Inline policies maintain a strict one-to-one relationship between a policy and an identity. 
+They are deleted when you delete the identity.
+
+ 2)resource-based policies
+ 3)permissions boundaries
+ 4)Organizations service control policy (SCPs)
+ 5)ACLs
+ 6)session policies.
+
+================================================================================
+
+
+S3(Simple Storage Service)
+====================
+->it is simple storage service which store unlimited amount of data and we can perform read and write operation also  can accesses from anywhere.
+->it is object object storage service i.e the data which we will store in s3 bucket that will store as in object format.
+->it is object based storage device ,each individual file is called object
+->It is highly scalable service and provides 99.99995 durability
+->we can access and upload data in s3 from anywhere.
+->in s3 we create bucket which is resource of s3
+->bucket is like continer in which our objects are geting stored
+->s3 in global service where as bucket is region specific
+->bucket name should be unique and name should be in lower case
+->we can store unlimited data,where as file size can bre from 0 to 5 TB
+->we can host static website in bucket
+->we can create 100 bucket per account
+->max capicity of bucket is 5 TB
+->we cant create bucket into bucket
+
+
+->some properties of s3 are:-
+   -Bucket versinoing
+   -tags
+   -default encryption
+   -Intelligent-Tiering Achive configuration
+   -Server access loging
+   -aws cloudtrail data events
+   -Amazon EventBridge
+   -transfer aceleration
+   -object lock
+   -event notification
+   -requster pay
+   -static website hosting
+  
+->some advandage and feature:
+   -durability and avalibility
+   -higly scalable
+   -unlimited data storage
+   -easily accessable
+   -secure our data using ACL
+   -Storage Classes
+  -Storage management
+  -Access management
+  -Data Processing
+  -Storage loging and monotoring
+  -Storage consistency
+
+->some use cases are:-
+  -we can use for backup and restore purpose
+  -data archive
+  - AI utilities
+  -hosting static web site
+  -cost optimazation with help of lifecycle
+
+
+S3 Storage Classes:-
+==============
+->there are 7 type of storeage classes but divide into 3 categories:-
+1.)frequent access
+   i.)S3 standard
+       ->it is a default storage class. If you don't specify the storage class when you upload an object,            Amazon S3 assigns the S3 Standard storage class.
+       ->it provide high avability and high durability,3 replical will create and  data will store in 3           diffrent AZ 
+
+   ii.)reduse redundancy (RRS)
+        ->The Reduced Redundancy Storage (RRS) storage class is designed for  noncritical(not imp),           reproducible(can create again) data that can be  stored with less redundancy than the S3          Standard storage class.
+         ->if data is not that much important which we can afford to loss  then we  can put our data in          this type of storage. it is costly than others
+
+   iii.)intelligent-tiering
+        ->this storge cost is designed to optimize storage cost by automatically moving data to the most            cost-effective acces tier. 
+         ->It automatically detect and check our data that is it frequently  accessing or not and then it              will change it class if not frequently accessing.
+         ->no retrival fees for this storage class.
+
+2)Infrequent access
+  i.)S3 Standard-IA
+  ->S3-Standard-IA is for data that is accessed less frequently , but required  rapid access when needed.
+  ->as compared to standard-IA its cost is low,almost half the price but we get charged haveily for accessing or retrival of our objects.
+
+  ii.)S3 One Zone-IA
+      ->it is similar to s3 Standard-IA but store data in one Az only i.e if that  region data center is down then we cant access our file.
+      ->data which is accessed less,but requires rapid acces when needed,but  replical in one zone only, can select one-zone-IA
+      ->ideal for those who want lower cost option of IA-data
+      ->good choice to store backup
+
+3)Archiving 
+this storage classes are designed for low-cost-data archiving
+   i)S3 Glacier Instant-Retrival
+     ->it use for archiving data that is rarely accesed and requires milisecond  of retrival.
+    ->data store in this storage class offer a cost savings compared to the s3- standard-IA storage class.
+    ->it also offer same latency and throughput performance as the s3 standard-IA 
+
+   ii)S3 Glacier Flexible Retrival
+       ->it is also used for archiving and same as galacier instantant -retrival but data retrived in mins.
+      ->the minimun storage duration period is 90 days for data storage .
+      ->it take 1-5 min for retrival
+     
+   iii)S3 Glacier Deep Archive
+     ->it is used for archiving of data that rarely needs to be accesed .
+     ->the minimun storage duration period is 180 days for data storage and  default retrival time of 12 hours .
+     ->it is lowest storage cost option in aws. 
+
+S3 LifeCycle:-
+===========
+->what:
+     -it is rules, to define actions on S3, to set duration on objects
+      such as transitioning objects to another storage class, archiving them,
+       or deleting them after a specific period of time
+     #-we use s3 lifecycle rule for cost optimization of storage of objects by transitive the object from one storage class to another storage class after particular period of        
+ time, and gets deleted once it is no longer needed.
+->why: 
+    -we use lifecycle for Cost optimization
+->how:
+    -their are three category 
+
+      i)frequent access ii)infrequent access iii)archive
+    -these three category are catogorized  in total 7 storage classes:
+	Amazon S3 Standard: 
+	Amazon S3 Intelligent-Tiering: 
+	Amazon S3 Standard Infrequent Access (S3 Standard-IA): 
+	Amazon S3 One Zone-Infrequent Access (S3 One Zone-IA): 
+	Amazon S3 Glacier Instant Retrival: 
+                  Amazon S3 Glacier flexible Retrival: 
+	Amazon S3 Glacier Deep Archive
+
+->can take the option life Cycl. Rule, on the management section, of the bucket.
+
+->we have to  maintain transition like std. to std IA or 1 zone IA or glacier 
+in which we have to specify min. days of time 
+like to transit Std. to std IA it takes min. 30 days and glac. to Deep Glac. 
+it is about min. 90 days. 
+
+================================================================================
+
+EC-2(Elastic Compute Cloud)
+======================
+->elastic compute cloud it come under IASS.
+->with help of ec2 service we will create virtul machine
+->ec-2 is region specific service
+->if our instance exits in mumbai region we cant operate it from other region
+->It comes under pay as you go category service. 
+ ->Ec-2 provides scalable computing capacity in the AWS cloud.
+ ->It enables us to scale-up or scale down the instance.
+ ->it has two storage option i.re EBS and instance store.
+->Pre configured templates are also available which is known as AMI.
+->our acc is limited to maximum of 20 instances per EC-2 region with two default high I/O instances
+->
+
+
+INSATNCE TYPE:-
+===============
+i)General Purpose          (Constance Terms, Balanced memory and cpu )
+ii)Compute Optimized   (Increase Cpu Power) 
+iii)Memory Optimized    (increase memory, RAM)
+iv)Storage  Optimized    (increase storage, low latency)
+v)Accelerated computing  (increase cpu and memory, graphic optimized) 
+
+
+
+AMI
+===
+->AMI capture current state of our system or instance ,It captures installed s/w of instance.
+->to create AMI we have to click on instance and click on action and then select image and templets and then click on create image.
+->AMI are regoins specific
+
+AMI TYPE:-(EBS and Instance store)
+==========================
+An AMI includes the following: One or more Amazon Elastic Block Store (Amazon EBS) snapshots, or, for instance-store-backed AMIs, 
+ a template for the root volume of the instance (for example, an operating system, an application server, and applications).
+
+
+Templetes
+=======
+->templete capture full configuration of instance like it AMI,instance type,its storage,,key-pair and security group.
+
+Security Group
+===========
+->Sg are like vairtual firewall which manage inbound and outbound traffic.
+A security group acts as a virtual firewall for your EC2 instances to control incoming and outgoing traffic. 
+Inbound rules control the incoming traffic to your instance, and outbound rules control the outgoing traffic from your instance. 
+When you launch an instance, you can specify one or more security groups.
+
+EBS
+====
+->EBS is elastic block storage which store data in block format:-
+->Elastic means scalable
+->Data store in block format like in HDD
+->it store Persistent (permanent)data, store data permanently
+
+-> EBS volume type are :-
+   i)SSD backend volume
+   ii)HDD backend volume
+   iii)previous generation volume
+  
+-> SSD backend volumes are bootable ,having high read write operation frequently
+   -SSD are also of two type 
+     i)genral purpose SSD (gp2 ,gp3):-
+       (provide a balance of price and performance ,this voliumes used for most overloads)
+     
+    ii)Provisonal IOPS SSD (input output operation per seconds)[io1,io2,io2 Block express]:-
+       (it provide high performance ,low latency and high throughput overload)
+
+->  HHD volume is non botable which also have two type:-
+     
+      i)Throughput optimized HDD[st1]:-
+        ->A low-cost HDD designed for frequently accessed, throughput-intensive workloads
+ 
+    ii)Clold HDD[sc1]
+       ->The lowest-cost HDD design for less frequently accessed workloads.
+
+->Previous generation volume type:-
+    ->if we need higher performance and high consistency than this volume type we can use.
+    ->its support boot volume
+    ->but its recommended that to use general purpose insted of this volume.
+    
+
+
+SNAPSHOT
+=========
+->snapshot capture volume current state.
+->we can use it to take backup
+->the data which we store in our system volume it will take backup of that data.
+->with the help of snapshot we can take backup also
+
+
+
+
+ELASTIC IP
+=========
+->server->http hosted->publically access with public ip->client->downtime or stop/start then public ip will change.
+If we want to make public ip as static we can use term  elastic ip for making our public ip as static.
+Elastic ip -->public ip make static
+AWS give access to 5 elastic ip->if allocate elastic ip and if we dot use it we have to pay for it
+ If we are using then we don’t have to pay charge .
+
+
+KEY-PAIR
+========
+->A key pair consisting of a public key and private key.
+->it is set of security credentials that we use to prove our identity when connecting to ec2 instance.
+->anyone who possesses our private key can connect to our instance,
+   so its important that we have to store private key in a secure place. 
+
+
+
+NETWORK-INTERFACE
+===================
+->private ip assign to nic
+->atleast 1 private ip attach to instance.
+->we can attach multiple nic to instance.
+-> in t2.micro we can attach 4 private ip
+->public ip also attach to nic ,it assign virtually to nic
+->NIC is AZ specific
+-> acc to instance type we can attach no of nic
+->their are two type of NIC:-
+   -Primary NIC:-(when we launch our instance ,by default that card will attach)
+   -secondary NIC:-(additionally we had to attach this card to our instance. it depends upon our     instance type how  many we can attach to it.)
+
+PURCHASE-OPTION
+================ 
+1.On demand Instance
+----we have to Pay by the second, for the instance that we launch. 
+----we have to Pay for what you use (by second)
+----their is no No long term commitmentin this option
+----It has Fixed charge
+----it is used for deploying application  and testing purpose
+----we can scale in and scale out in this option
+----purchased at a fixed rate per hour  of applicaion on ec2.
+----suitable for use during testing and development
+
+2.Saving Plans
+----It Reduce our EC2 amount cost by making a commitment to a consistent amount of usage. 
+--we have to make Long term commitment
+--up-front(we have to pay cost in advance) (full advance payment)
+--it  saved the cost upto 60% to 70%
+--we have to make 1 to 3 year of commitment
+--it will charge hourly.
+
+3.Reserved Instance
+----- Reduce your Amazon EC2 costs by making a commitment to a consistent instance configuration, including instance type and Region, for a term of 1 or 3 years
+----we have to make Long term commitment
+----1 to 3 years
+----it saved cost up to 80%
+----we cant cancel reserved instance
+----up-frant(we have to pay cost in advance) (advance payment) can pay in installment
+----instance type, instance configuration, region
+-----hourly pay
+-----theri is No cancelation option
+
+4.Spot Instance
+Request unused EC2 instances, which can reduce your Amazon EC2 costs significantly.
+----have to pay hourly
+----price vary in this type
+----it also reduse cost reduce cost
+----aws will take back this instance when th price will increase
+----can use for testing and development workloads.
+
+5.Dedicated Instance
+-----Pay by the hour  for instances that run on single-tenant hardware.
+-----tenancy->shared-dedicated host-dedicate instance
+-----dedicated instances are run in a vpc on hardware that is dedecated to a single        customer.
+-----your dedicated instance are physically isolated at the host hardwae level from        instance that belong to other aws account
+
+6.Dedicated hosts
+-----Pay for a physical host that is fully dedicated to running your instances, and bring your existing per-socket, per-core, or per-VM software licenses to reduce costs.
+(while launching ec2 in config their is field tenency int that field we have to select DH) 
+----control on instance
+----More expencive
+----License model per instance
+----Strong regularility
+----Server
+
+7.Capicity reservation
+Reserve capacity of our ec2 instances in a specific AZ for a duration.
+Pay, by the hour, for instances that run on single-tenant hardware.
+
+----reserve capacity for your EC2 instance in a specific avability zones
+----Long term commitment
+----1 to 3 years
+----cost saved up to 80%
+----cant cancel reserved instance
+----up-frant
+----instance type, instance configuration, region
+-----hourly pay
+-----No cancelation
+
+
+
+LOAD-BALANCER:-
+================
+->load balancer distributes incoming application traffic across multiple ec2 instance in multiple availability zones.
+->load is nothing but signals which come to our server client request which come to our server.
+->when traffic will increase then load on server will also increase.
+->through load balancer we can define some function to manage load of server.
+->Lb automatically distributes  our incoming traffic across multiple targets,such as  ec2 instance , container and ip adderss,
+in one or more avaliability zones.
+->it monitor the health of it registered target group , and routes traffic only to the healthy target.
+->Lb work on network layer and application layer.
+->it work in round robin form.i.e one by one or one after another
+
+->it work on newtwork and application layer
+
+->type of Load balancer
+  - classical LB
+  -Application LB
+  -network LB
+  -Gateway LB
+
+AUTO-SCALLING:-
+===============
+->In AS according to our requirment number of instance will scale up and scale down.
+->it is used for cost efficency and for high avability.
+->it manage uptime,reduce cost and manage system automatic.
+
+->first we have to create launch configuration
+->launch configuration is a configuration to launch automatic instances
+->we need launch configuration because we dont launch instances manually and cant do changes manully.
+->their are six steps to create  launch configuration
+   - select ami
+   - select instance type
+   - basic cofiguration and advance configuration
+   - storage
+   - security group
+   - key pair
+
+->after creating launch configuration we have to create auto scaling group
+->in auto scaling grop their are two parts
+   i)condition
+   ii)auto scaling group size
+->in group size their are three groups
+   -min group   -max group   -desired capicity
+->in condition we have to specify AS group policy
+->in AS group policy we have condition and alarm
+->according to condition we have to set alarm
+->in condition we can specify two condition
+->increasing condition and decreasing condition
+->in increasing we have to specify some condation such as  if threshold crossout an instance should be created
+->and in decreasing condation we have to specify condation such a way that  if threshold crossout an instance should be automatically delete
+
+Type of AS:-
+========       
+i)static / manual AS  ==>system will in constant condition=>Neither it will increase nor decrease
+->desired ,min and max instance are same in this group.
+ii)dynamic AS=>apply condition 
+->desired diff, min diff, and max also diff
+iii)Schedule AS=>dynamic As=>scheduling (with help of corntab)=>
+->it can be both static and dynamic.
+->with the help of scheduling we can mange instance on specific days.
+
+
+=====================================================================================================================================================================================================================================================================================================================================================================
+
+
+VPC
+===
+->virtual private cloud is isolated network which is not connected with outside network.
+->it is logically isolated from other virtual n/w in aws cloud
+->we can create 5 vpc in one region
+->we can create 200 subnets in one vpc
+->i.e 1000 subnet we can create in one region
+->because of we can create 200 subnet though we can create 200 route table
+->once we create vpc DHCP,NACL and security group will be automatically created.
+->VPC will create in region not in avability zone
+->VPC is region specific and subnet is avability zone specific
+
+ROUTING TABLE
+==============
+
+Internet gateway:-
+============
+->It is a virtual router that connects a VPC to the internet.
+->Default Vpc is already attached with an internet gateway
+->if we create a new VPC then we must attach the internet gateway in order to access the internet.(0.0.0.0/0 is its route point of Igws)
+->Ensure that your subnets route table points to the internet gateway
+->It perform NAT b/w our private and public ipv4 address
+->it support both ipv4 and ipv6
+
+NAT:-(Network address translation)
+=============================
+we can use a nat gateway to enable  instances in a private subnet to connect to the internet of other  aws service ,but prevent the
+ information from initiating a connection with those instance
+->to create nat gateway ,we must specify the public subnet in which the nat gateway should reside .
+->we must specify  an elastic ip address to associate with NAT gateway when we create it
+->no need to assign public ip to your private instance
+ ->after we have created nat gateay we must update the route table associated with one or more of your private subnets to point internet bound traffic to the nat gateway
+this enables instance in our private subnet to communicate with the internet
+->deleting a nat  gateway, disassociates its elastic ip address, but does not release the address from your account.
+->instance private ip cant access internet
+->with help of NAT private ip replace into public ip
+->NAT Use for Accessing internet in private instance
+->have to create new rt for nat
+
+#Diff public and private?
+->Private ip use to communicate within n/w , public ip use for communicate outside n/w.
+->we cant use internet in private ip,can use in public .
+->NAT will attach in public subnet but use for private subnet.
+->private instance->private ip ->internet->make it public ->security concern
+
+
+security Group:-
+==============
+->it attach with instance to manage inbound traffic
+->it supports only allow rules,and bydefault all rules are denied.we cant deny the rule for establishing a connection.
+->it is stateful means that any changes made in the inbound rule will be automatically reflected in the outbound rule.
+->for ex if we allow incomeing port for 80 then we also have too add the outbound rule explectily.
+->it is a virtual firewall works at ENI level
+-> upto 5 security groups per EC2 instance interface can be applied
+->can only have permit rules, cant have deny rules
+->state full  ,return traffic ,of allowed inbound traffic is allowed ,even if there are no route to allow it.
+
+N/W ACL:-
+=========
+->it attach to subnet level
+->mangae inbound and outbound traffic
+->it supports both allow and deny rules. and by default all the rules are denied.we need to add the rule which we either allow or deny it.
+->it is stateless means that any changes made in the inbound rule will not reflect the outbound rule.i.e we need to add the outbound rule separately.
+->for example if we add an inbound rule port number 80,then we also have to explecitly add the outbound rule.
+->it is a function performed on the implement router
+->NACL is an optional layer of security for our VPC that acts as a firewall for controlling traffic in and out of one or more subnets.
+->our VPC automatically comes with a modifiable default n/w ACl by default,it allows all inbound an outbound ipv4 taffic and if applicable ,ipv6 traffic.
+->we can create a custom n/w ACL and associate it with a subnet by default,each custom n/w ACl denies all inbound and outbound traffic untill we add rules.
+->each subnet in your VPC must be associated with a n/w ACL if we don’t explictly associate a subnet with a n/w ACL , the subnet is automatically associated with th default n/w ACl.
+
+
+#All default VPCs will be associated with an IPv4 CIDR block with a 172.31. 0.0/16 address range. This will give you 65,536 possible IP addresses, minus some AWS reserved addresses.
+ VPCs can be created with smaller CIDR blocks, such as a /20, which would yield 4091 possible addresses.
+
+
+hii welcome to cloudblitz
+
+weclome to aws batch
+
+
+
+
+
+
+
+
